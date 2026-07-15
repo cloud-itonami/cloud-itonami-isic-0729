@@ -1,0 +1,11 @@
+{:itonami.blueprint/id "cloud-itonami-0729"
+ :itonami.blueprint/name "Non-Ferrous Metal Ore Mining Operations Coordinator"
+ :itonami.blueprint/isic-rev5 "0729"
+ :itonami.blueprint/domain :mining/nonferrous-ore
+ :itonami.blueprint/license "AGPL-3.0-or-later"
+ :itonami.blueprint/social-impact [:resource-stewardship :mine-safety :supply-resilience]
+ :itonami.blueprint/governor :nonferrous-ore-governor
+ :itonami.blueprint/robotics true
+ :itonami.blueprint/required-technologies [:robotics :identity :forms :dmn :bpmn :audit-ledger :telemetry]
+ :itonami.blueprint/status :public-oss
+ :itonami.blueprint/maturity :implemented}
