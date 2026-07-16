@@ -8,7 +8,31 @@
  :deps {io.github.kotoba-lang/langgraph
         {:local/root "../../kotoba-lang/langgraph"}
         io.github.kotoba-lang/robotics
-        {:local/root "../../kotoba-lang/robotics"}}
+        {:local/root "../../kotoba-lang/robotics"}
+        ;; Cross-actor supply-chain-linkage contract (ADR-2607999980,
+        ;; DIRECT PORT of ADR-2607999950/extended by ADR-2607999960/
+        ;; ADR-2607999970's pattern to the smartphone chain):
+        ;; `nonferrousops.export/pedigree-for-production-record`
+        ;; packages a `kotoba.pedigree` record from a real, on-file
+        ;; production record (an ore-grade survey + tonnage this
+        ;; actor already recorded via `nonferrousops.store/add-
+        ;; production-record`) so a downstream actor (`cloud-itonami-
+        ;; isic-2610`) can independently re-verify the claim as plain
+        ;; EDN data -- never a live network call between actors. This
+        ;; actor is the ORIGIN of the smartphone-chain pedigree chain
+        ;; (never embeds an `:upstream` of its own), so it does not
+        ;; strictly need the `:pedigree/upstream` chaining support
+        ;; ADR-2607999960 added -- pinned to the CURRENT HEAD anyway
+        ;; (the same SHA every other cloud-itonami-isic-* actor in
+        ;; this fleet already pins) for fleet-wide pin consistency,
+        ;; not because this repo's own code path needs it. A real
+        ;; pinned git-coordinate dep (not :local/root), same reasoning
+        ;; `ironops.export`'s own dependency on this library already
+        ;; establishes, so this repo stays forkable standalone outside
+        ;; the monorepo.
+        io.github.kotoba-lang/pedigree
+        {:git/url "https://github.com/kotoba-lang/pedigree.git"
+         :sha "f85784211422a651fea26f448f601abfba2e7d61"}}
  :aliases
  {;; offline workspace dev -- pin transitive langchain to local checkout
   :dev {:override-deps
@@ -21,8 +45,31 @@
                       {:git/tag "v0.5.1" :git/sha "dfb30dd"}}
          :main-opts ["-m" "cognitect.test-runner"]
          :exec-fn cognitect.test-runner.api/test}
+  ;; ADR-2607999980's own cross-repo-test alias. THIS REPO IS THE
+  ;; ORIGIN of the smartphone-chain pedigree chain -- it has no
+  ;; upstream sibling repo of its own to cross into, so this alias's
+  ;; :extra-deps needs no foreign :local/root entry today (mirrors
+  ;; `cloud-itonami-isic-0710`'s own `:cross-repo-test` alias, the
+  ;; direct precedent this repo ports). It exists for two reasons:
+  ;; (1) so this repo carries the SAME :cross-repo-test/test-cross-
+  ;; repo directory-shape convention every other link in this fleet's
+  ;; pedigree pattern already uses, ready for `cloud-itonami-isic-2610`
+  ;; (ADR-2607999980 Part 2) to declare THIS repo as ITS OWN
+  ;; :local/root sibling in ITS OWN :cross-repo-test alias -- which
+  ;; requires no special export ceremony on THIS side beyond the
+  ;; ordinary deps.edn/:paths shape above; (2) to house a real
+  ;; integration test proving the SAME 'real data, not a fixture'
+  ;; discipline this fleet requires for cross-actor claims -- a
+  ;; genuinely-stored production record round-tripped through this
+  ;; actor's own real store, never a hand-typed pedigree literal.
+  :cross-repo-test
+  {:extra-paths ["test-cross-repo"]
+   :extra-deps {io.github.cognitect-labs/test-runner
+                {:git/tag "v0.5.1" :git/sha "dfb30dd"}}
+   :main-opts ["-m" "cognitect.test-runner" "-d" "test-cross-repo"]
+   :exec-fn cognitect.test-runner.api/test}
   ;; static analysis -- clj-kondo from deps (no binary), errors fail CI.
   :lint {:replace-deps {clj-kondo/clj-kondo {:mvn/version "2024.11.14"}}
          :main-opts    ["-m" "clj-kondo.main"
-                        "--lint" "src" "test"
+                        "--lint" "src" "test" "test-cross-repo"
                         "--fail-level" "error"]}}}
