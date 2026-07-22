@@ -8,4 +8,55 @@
  :itonami.blueprint/robotics true
  :itonami.blueprint/required-technologies [:robotics :identity :forms :dmn :bpmn :audit-ledger :telemetry]
  :itonami.blueprint/status :public-oss
- :itonami.blueprint/maturity :implemented}
+ :itonami.blueprint/maturity :implemented
+ :itonami.blueprint/implemented-slice
+ "NonFerrousOps-LLM ⊣ Non-Ferrous Ore Governor, langgraph-clj StateGraph
+ (langgraph.graph, nonferrousops.operation/build), append-only audit
+ ledger (nonferrousops.store/ledger + append-ledger!, MemStore). Fixes
+ a prior gap worse than the usual deferred-stub pattern: `deps.edn`
+ already correctly declared the real
+ `io.github.kotoba-lang/langgraph` dependency in its top-level `:deps`
+ map (no fake-dependency problem here), but NOTHING in `src/` ever
+ called `langgraph.graph` -- the file previously named `operation.cljc`
+ was not a StateGraph builder at all, just a static ops-metadata table
+ (`operations`/`valid-operation?`/`operation-info`, grep-verified
+ unused by any other namespace in this repo). `nonferrousops.sim`'s
+ `run-proposal` hand-chained `advisor/mock-advisor -> governor/check`
+ directly with plain function calls. No audit ledger existed anywhere
+ in the repo, and there was no CI workflow. Now: a genuinely compiled
+ StateGraph (`:intake -> :advise -> :govern -> :decide -+-> :commit /
+ :request-approval -> :commit / :hold`) with
+ `interrupt-before #{:request-approval}` + in-memory checkpointer for
+ real human-in-the-loop resume, and a real
+ `nonferrousops.store/ledger` + `append-ledger!` (new in this fix)
+ genuinely wired into the `:commit`, `:hold`, and `:request-approval`
+ (rejection) graph nodes. `nonferrousops.governor`'s six HARD checks
+ (forbidden operation, no spec-basis, site record missing/not
+ verified, unknown commodity, safety-concern-escalation, confidence
+ floor) and `nonferrousops.nonferrousopsllm`'s advisor dispatch are
+ reused UNCHANGED -- this fix only wires the existing domain policy
+ into a real compiled graph and a real ledger, it does not redesign
+ it. Preserved EXACTLY as the governor code (not just its prose)
+ computes it: FIVE of the six checks -- forbidden-operation,
+ no-spec-basis, site-record-missing/not-verified, unknown-commodity,
+ AND `:propose/flag-safety-concern`'s own safety-concern-escalation --
+ are folded into `check`'s `:hard?` flag and therefore route straight
+ to `:hold`, never through `:request-approval`, matching the
+ governor's own docstring header (\"ALL HARD violations ... a human
+ approver CANNOT override them\"); only low confidence alone reaches
+ human sign-off. `nonferrousops.phase`'s workflow-stage tracker
+ (intake -> verify -> propose -> resolved/hold, a per-run stage label
+ distinct from sibling actors' 0->3 autonomy-rollout phase gates) is
+ reused unchanged and now genuinely recorded as `:workflow-phase` on
+ every decision audit fact instead of being computed and discarded.
+ Proven end-to-end by `test/nonferrousops/operation_test.clj` (ledger
+ stays empty until a real commit or across an interrupted/not-yet-
+ approved run, hold-until-approved for a low-confidence proposal via
+ the `:advisor-fn` injection seam, governor rejection blocks commit
+ for five independent HARD violations including the safety-concern
+ flag) through the REAL compiled graph, plus a `clojure -M:dev:run`
+ demo runner producing real ledger entries for every scenario. 31
+ tests / 127 assertions green (`clojure -M:dev:test`), clj-kondo 0
+ errors/0 warnings. CI (`.github/workflows/ci.yml`, sibling-checkout
+ pattern for `:local/root` deps) was missing and is added in this
+ fix."}
