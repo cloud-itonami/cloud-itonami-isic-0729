@@ -15,7 +15,7 @@
 
   Usage: `clojure -M:dev:render-html [out-file]`
   (default `docs/samples/operator-console.html`)."
-  (:require [clojure.string :as str]
+  (:require [kotoba.lang.text :as str]
             [nonferrousops.store :as store]
             [nonferrousops.operation :as op]
             [langgraph.graph :as g]))
