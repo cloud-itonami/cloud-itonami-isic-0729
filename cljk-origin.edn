@@ -1,0 +1,22 @@
+{:format :kotoba.cljk-origin/v1
+ :renamed-on "2026-09-11"
+ :decision "adr-2609111500-cljk-rename-all-clojure-source (com-junkawasaki/root 90-docs/adr; owner instruction 2026-09-11)"
+ :rule "value = the extension the file had before the rename. A path ending in .clj.cljk or .cljs.cljk kept it in the name because both platform files existed (or the plain target was taken)."
+ :origins
+ {"src/nonferrousops/export.cljk" ".cljc"
+  "src/nonferrousops/facts.cljk" ".cljc"
+  "src/nonferrousops/governor.cljk" ".cljc"
+  "src/nonferrousops/nonferrousopsllm.cljk" ".cljc"
+  "src/nonferrousops/operation.cljk" ".cljc"
+  "src/nonferrousops/phase.cljk" ".cljc"
+  "src/nonferrousops/registry.cljk" ".cljc"
+  "src/nonferrousops/render_html.cljk" ".clj"
+  "src/nonferrousops/sim.cljk" ".cljc"
+  "src/nonferrousops/store.cljk" ".cljc"
+  "test-cross-repo/nonferrousops/pedigree_integration_test.cljk" ".clj"
+  "test/nonferrousops/export_test.cljk" ".clj"
+  "test/nonferrousops/facts_test.cljk" ".clj"
+  "test/nonferrousops/governor_test.cljk" ".clj"
+  "test/nonferrousops/operation_test.cljk" ".clj"
+  "test/nonferrousops/registry_test.cljk" ".clj"
+  "test/nonferrousops/store_contract_test.cljk" ".clj"}}

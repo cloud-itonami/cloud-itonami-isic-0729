@@ -49,7 +49,7 @@
  distinct from sibling actors' 0->3 autonomy-rollout phase gates) is
  reused unchanged and now genuinely recorded as `:workflow-phase` on
  every decision audit fact instead of being computed and discarded.
- Proven end-to-end by `test/nonferrousops/operation_test.clj` (ledger
+ Proven end-to-end by `test/nonferrousops/operation_test.cljk` (ledger
  stays empty until a real commit or across an interrupted/not-yet-
  approved run, hold-until-approved for a low-confidence proposal via
  the `:advisor-fn` injection seam, governor rejection blocks commit
