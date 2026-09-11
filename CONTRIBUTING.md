@@ -5,8 +5,8 @@ Thank you for your interest in contributing to cloud-itonami-isic-0729!
 ## Getting Started
 
 1. Clone the repository
-2. Run `clojure -M:test` to verify the test suite passes
-3. Run `clojure -M:lint` to check code style
+2. Run `kbb -M:test` to verify the test suite passes
+3. Run `kbb -M:lint` to check code style
 4. Make your changes in a feature branch
 
 ## Guidelines
@@ -19,13 +19,13 @@ Thank you for your interest in contributing to cloud-itonami-isic-0729!
 ## Testing
 
 ```bash
-clojure -M:test
+kbb -M:test
 ```
 
 ## Linting
 
 ```bash
-clojure -M:lint
+kbb -M:lint
 ```
 
 ## Submitting Changes
