@@ -68,7 +68,7 @@ Phase 0→3 rollout) applies checks in priority order, all HARD violations:
 ### Demo (mock advisor, offline)
 
 ```bash
-clojure -M:dev:run
+kbb -M:dev:run
 ```
 
 Walks through four scenarios:
@@ -80,7 +80,7 @@ Walks through four scenarios:
 ### Tests
 
 ```bash
-clojure -M:test
+kbb -M:test
 ```
 
 16 tests / 61 assertions covering domain facts, registry calculations, store
@@ -89,7 +89,7 @@ contract, governor rules, commodity classification, and escalation scenarios.
 ### Lint
 
 ```bash
-clojure -M:lint
+kbb -M:lint
 ```
 
 Static analysis (clj-kondo) on src/ and test/. Zero errors, zero warnings.

@@ -28,7 +28,7 @@
   via its own `:cross-repo-test` alias declaring THIS repo as a
   `:local/root` sibling.
 
-  Run with `clojure -M:dev:cross-repo-test`. Still no live network
+  Run with `kbb -M:dev:cross-repo-test`. Still no live network
   call at runtime: this is a build-time classpath dependency exercised
   by tests, same category as every other alias in this fleet."
   (:require [clojure.test :refer [deftest is testing]]
