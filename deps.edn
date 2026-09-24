@@ -37,9 +37,16 @@
         ;; the monorepo.
         io.github.kotoba-lang/pedigree
         {:git/url "https://github.com/kotoba-lang/pedigree.git"
-         :sha "f85784211422a651fea26f448f601abfba2e7d61"}}
+         :git/sha "f85784211422a651fea26f448f601abfba2e7d61"}}
  :aliases
- {;; offline workspace dev -- pin transitive langchain to local checkout
+ {
+  ;; kbb -M:physics -> the physical-AI bot's measurement: runs physics.edn on
+  ;; kotoba.robotics.process and prints one probe map. Exit 2 = could not measure.
+  :physics {:main-opts ["-m" "kotoba.robotics.process.probe"]}
+  ;; kbb -M:physai-test -> test/'s .cljk on kbb's runner (the bot's test count;
+  ;; a .kotoba vertical's own :test may refuse kbb on purpose).
+  :physai-test {:extra-paths ["test" "test-physai"] :main-opts ["-m" "cognitect.test-runner"]}
+;; offline workspace dev -- pin transitive langchain to local checkout
   :dev {:override-deps
         {io.github.kotoba-lang/langchain
          {:local/root "../../kotoba-lang/langchain"}}}
