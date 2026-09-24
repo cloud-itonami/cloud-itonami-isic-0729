@@ -27,3 +27,4 @@
 
 # Testing
 .clj-kondo/.cache
+.nbb/

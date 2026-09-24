@@ -10,7 +10,7 @@
   the compiled graph is real and that the audit ledger
   (`nonferrousops.store/append-ledger!`, also new in this fix) is
   genuinely wired into the `:commit`/`:hold`/`:request-approval` nodes."
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.test :refer [deftest is testing]]
             [langgraph.graph :as g]
             [nonferrousops.operation :as operation]
             [nonferrousops.store :as store]))

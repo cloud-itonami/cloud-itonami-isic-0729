@@ -1,5 +1,5 @@
 (ns nonferrousops.facts-test
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.test :refer [deftest is testing]]
             [nonferrousops.facts :as facts]))
 
 (deftest known-commodity-test

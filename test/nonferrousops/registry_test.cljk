@@ -1,5 +1,5 @@
 (ns nonferrousops.registry-test
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.test :refer [deftest is testing]]
             [nonferrousops.registry :as registry]))
 
 (deftest ore-grade-matches-claim-test

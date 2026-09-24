@@ -6,7 +6,7 @@
   that broke cloud-itonami-isic-0710's test suite (compile error:
   `governor/forbidden-operation-violations not public`); this suite is
   written to avoid it structurally."
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.test :refer [deftest is testing]]
             [nonferrousops.governor :as governor]
             [nonferrousops.store :as store]))
 
