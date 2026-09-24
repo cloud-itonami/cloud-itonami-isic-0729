@@ -1,5 +1,5 @@
 (ns nonferrousops.store-contract-test
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.test :refer [deftest is testing]]
             [nonferrousops.store :as store]))
 
 (deftest mem-store-implements-contract

@@ -5,7 +5,7 @@
   `pedigree-for-production-record`, direct-ported to this actor's
   own operational-record-derived (not physics-simulation-derived)
   evidentiary basis."
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.test :refer [deftest is testing]]
             [kotoba.pedigree :as pedigree]
             [nonferrousops.export :as export]
             [nonferrousops.store :as store]))
